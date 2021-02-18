@@ -19,10 +19,4 @@ export default {
   color: #2c3e50;
   margin-top: 60px;
 }
-
-button {
-  border: 2px solid black;
-  border-radius: 10px;
-  width: 100px;
-}
 </style>
