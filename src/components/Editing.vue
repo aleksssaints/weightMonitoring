@@ -1,9 +1,16 @@
 <template>
     <div>
-        <h1>{{ pageTitle }}</h1>
-        <label>Вес сегодня</label>
-        <input type="text" v-model="weight">
-        <button @click="submitWeight">Добавить</button>
+        <div class="addWeight">
+            <h1>{{ pageTitle }}</h1>
+            <label>Вес сегодня</label>
+            <input type="text" v-model="weight">
+            <button @click="submitWeight">Добавить</button>
+            <ul>
+                <li v-for="weight of weightList" v-bind:key="weight['.key']">
+                    <p>{{weight.weight}}</p>
+                </li>
+            </ul>
+        </div>
     </div>
 </template>
 
@@ -12,13 +19,13 @@ import firebase from 'firebase/app'
 import 'firebase/database'
 
 var firebaseConfig = {
-  apiKey: 'AIzaSyCeSmkaeRa5IgWWLMbDpVzt4Qr8UCzTiN0',
-  authDomain: 'weightmonitoring-80981.firebaseapp.com',
-  databaseURL: 'https://weightmonitoring-80981-default-rtdb.firebaseio.com',
-  projectId: 'weightmonitoring-80981',
-  storageBucket: 'weightmonitoring-80981.appspot.com',
-  messagingSenderId: '621739309399',
-  appId: '1:621739309399:web:690a64317a28a39bed6612'
+  apiKey: '',
+  authDomain: '',
+  databaseURL: '',
+  projectId: '',
+  storageBucket: '',
+  messagingSenderId: '',
+  appId: ''
 }
 firebase.initializeApp(firebaseConfig)
 const database = firebase.database()
@@ -30,6 +37,9 @@ export default {
     return {
       pageTitle: 'Страница добавления веса'
     }
+  },
+  firebase: {
+    weightList: weightRef
   },
   methods: {
     submitWeight () {
