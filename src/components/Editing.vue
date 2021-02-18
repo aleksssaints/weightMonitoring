@@ -2,16 +2,10 @@
     <div>
         <div>
             <h1>Страница добавления веса</h1>
-            <div class="addWeight">
-              <label>Вес сегодня</label>
-              <input type="text" v-model="weight">
-              <button @click="handleCreatedWeigth">Добавить</button>
-            </div>
-            <ul>
-                <li v-for="weight of weightList" :key="weight['.key']">
-                    <p>{{weight}}</p>
-                </li>
-            </ul>
+            <h2>Введите ваш вес сегодня</h2>
+            <input type="text" v-model="weight">
+            <button @click="handleCreatedWeigth">Сохранить</button>
+            <h2><router-link to="/graph">Открыть график измнения веса</router-link></h2>
         </div>
     </div>
 </template>
@@ -44,7 +38,7 @@ export default {
         this.submitWeight()
         return
       }
-      this.weight = 'Сегодня уже было введено значение веса'
+      this.weight = 'Сегодня вес уже заполнен'
     },
     submitWeight () {
       weightRef.push({ weight: this.weight, date: Date.now() })
@@ -56,8 +50,14 @@ export default {
 
 <style scoped>
 button {
-  border: 2px solid black;
-  border-radius: 10px;
+  border: 1px solid silver;
+  border-radius: 3px;
   width: 100px;
+  height: 25px;
+  margin-bottom: 20px;
+}
+input {
+  margin-bottom: 20px;
+  width: 200px;
 }
 </style>
