@@ -6,8 +6,8 @@
             <input type="text" v-model="weight">
             <button @click="submitWeight">Добавить</button>
             <ul>
-                <li v-for="weight of weightList" v-bind:key="weight['.key']">
-                    <p>{{weight.weight}}</p>
+                <li v-for="weight of weightList" :key="weight['.key']">
+                    <p>{{weight}}</p>
                 </li>
             </ul>
         </div>
@@ -15,35 +15,27 @@
 </template>
 
 <script>
-import firebase from 'firebase/app'
-import 'firebase/database'
-
-var firebaseConfig = {
-  apiKey: '',
-  authDomain: '',
-  databaseURL: '',
-  projectId: '',
-  storageBucket: '',
-  messagingSenderId: '',
-  appId: ''
-}
-firebase.initializeApp(firebaseConfig)
-const database = firebase.database()
-const weightRef = database.ref('weight')
+import { weightRef } from '../firebase'
 
 export default {
   name: 'Editing',
   data () {
     return {
+      weight: '',
+      weightList: [],
       pageTitle: 'Страница добавления веса'
     }
   },
-  firebase: {
-    weightList: weightRef
+  created () {
+    weightRef.on('value', (s) => {
+      this.weightList = s.val()
+    })
   },
   methods: {
     submitWeight () {
-      weightRef.push({ weight: this.weight, edit: false })
+      // this.weightList.some()
+      weightRef.push({ weight: this.weight, edit: false, date: new Date() })
+      this.weight = ''
     }
   }
 }
