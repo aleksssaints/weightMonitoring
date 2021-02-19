@@ -6,7 +6,6 @@
                 <p>{{weight}}</p>
             </li>
         </ul>
-        <h2><router-link to="/">Открыть страницу добавления веса</router-link></h2>
     </div>
 </template>
 
