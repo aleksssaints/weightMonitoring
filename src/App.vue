@@ -1,12 +1,5 @@
 <template>
   <div id="app">
-    <div class="navbar">
-      <h3>
-        <router-link to="/login">Вход</router-link>
-        <router-link to="/">Добавить вес</router-link>
-        <router-link to="/graph">График изменения</router-link>
-      </h3>
-    </div>
     <img class="logo" src="./assets/logo.png">
     <router-view/>
   </div>
@@ -40,7 +33,7 @@ input {
   width: 200px;
 }
 
-.error {
+.fieldError {
   color: red;
 }
 

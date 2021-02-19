@@ -1,5 +1,6 @@
 import firebase from 'firebase/app'
 import 'firebase/database'
+import 'firebase/auth'
 
 var firebaseConfig = {
   apiKey: 'AIzaSyCeSmkaeRa5IgWWLMbDpVzt4Qr8UCzTiN0',
@@ -12,6 +13,5 @@ var firebaseConfig = {
 }
 firebase.initializeApp(firebaseConfig)
 const database = firebase.database()
+export const authRef = firebase.auth()
 export const weightRef = database.ref('weight')
-
-// window.weightRef = weightRef

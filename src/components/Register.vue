@@ -1,19 +1,21 @@
 <template>
-    <form @submit.prevent="registerUser">
+    <form>
         <h1>Страница регистрации</h1>
         <label>Почта</label>
         <input type="email" v-model="user.email" placeholder="example@mail.ru">
         <br />
         <label>Пароль</label>
-        <input type="text" v-model="user.password" placeholder="Пароль не меньше 6 символов">
+        <input type="password" v-model="user.password" placeholder="Не меньше 6 символов">
         <br />
-        <button @click="handleCreatedWeigth">Продолжить</button>
-        <h2 v-if="error" class="error">Некорректно введены данные</h2>
+        <button @click="registerUser">Продолжить</button>
+        <h2 v-if="fieldError" class="fieldError">{{ msg }}</h2>
         <h2><router-link to="/login">Уже зарегистрированы? Войти</router-link></h2>
     </form>
 </template>
 
 <script>
+import { authRef } from '../firebase'
+
 export default {
   name: 'register',
   data () {
@@ -22,15 +24,26 @@ export default {
         email: '',
         password: ''
       },
-      error: false
+      fieldError: false,
+      msg: ''
     }
   },
   methods: {
     registerUser () {
       if (this.user.email === '' || this.user.password === '' || this.user.password.length < 6) {
-        this.error = true
+        this.fieldError = true
+        this.msg = 'Некорректно заполнены поля'
+      } else {
+        try {
+          authRef.createUserWithEmailAndPassword(this.user.email, this.user.password)
+          this.$router.push({ name: 'Editing' })
+        } catch (err) {
+          this.fieldError = true
+          this.msg = 'Ошибка при регистрации'
+          console.log(err)
+        }
       }
-    }  
+    }
   }
 }
 </script>

@@ -11,7 +11,7 @@ export default new Router({
   mode: 'history',
   routes: [
     {
-      path: '/',
+      path: '/editing',
       name: 'Editing',
       component: Editing
     },
@@ -21,7 +21,7 @@ export default new Router({
       component: Graph
     },
     {
-      path: '/login',
+      path: '/',
       name: 'Login',
       component: Login
     },

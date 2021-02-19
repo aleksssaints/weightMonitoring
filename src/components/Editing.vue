@@ -6,6 +6,7 @@
             <input type="text" v-model="weight">
             <button @click="handleCreatedWeigth">Сохранить</button>
         </div>
+        <h2><router-link to="/graph">График изменения</router-link></h2>
     </div>
 </template>
 
@@ -17,7 +18,8 @@ export default {
   data () {
     return {
       weight: '',
-      weightList: []
+      weightList: [],
+      isNotAuth: true
     }
   },
   created () {
