@@ -13,6 +13,7 @@
 import { weightRef } from '../firebase'
 
 export default {
+  name: 'graph',
   data () {
     return {
       weightList: []
