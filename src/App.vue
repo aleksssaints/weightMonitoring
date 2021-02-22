@@ -40,4 +40,14 @@ input {
 .logo {
   height: 100px;
 }
+
+a {
+  color: #551A8B;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
 </style>
