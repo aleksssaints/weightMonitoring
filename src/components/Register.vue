@@ -9,7 +9,7 @@
         <br />
         <button @click="registerUser">Продолжить</button>
         <h2 v-if="fieldError" class="fieldError">{{ msg }}</h2>
-        <h2><router-link to="/login">Уже зарегистрированы? Войти</router-link></h2>
+        <h2><a @click="toLoginPage">Уже зарегистрированы? Войти</a></h2>
     </form>
 </template>
 
@@ -36,13 +36,16 @@ export default {
       } else {
         try {
           authRef.createUserWithEmailAndPassword(this.user.email, this.user.password)
-          this.$router.push({ name: 'Editing' })
+          this.$router.push({ name: 'Editing', props: { isAuthorised: true } })
         } catch (err) {
           this.fieldError = true
           this.msg = 'Ошибка при регистрации'
           console.log(err)
         }
       }
+    },
+    toLoginPage () {
+      this.$router.push({ name: 'Login' })
     }
   }
 }
