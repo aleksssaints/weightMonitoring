@@ -13,12 +13,14 @@ export default new Router({
     {
       path: '/editing',
       name: 'Editing',
-      component: Editing
+      component: Editing,
+      props: true
     },
     {
       path: '/graph',
       name: 'Graph',
-      component: Graph
+      component: Graph,
+      props: true
     },
     {
       path: '/',
