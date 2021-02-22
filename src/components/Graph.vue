@@ -1,80 +1,87 @@
 <template>
     <div>
+      <div v-if="isAuthorised">
         <h1>График изменения веса</h1>
 
-        <ul>
-            <li v-for="weight of weightList" :key="weight['.key']">
-                <p>{{weight}}</p>
-            </li>
-        </ul>
+        <select v-model="selectedDateInterval">
+          <option v-for="option in options" v-bind:value="option.value" v-bind:key="option.value">
+            {{ option.text }}
+          </option>
+        </select>
 
-        <button id="renderBtn">
-          Render
-        </button>
+        <canvas id="weightChart" style="width:100%; height:60% !important" ></canvas>
 
-        <div class="container">
-          <canvas id="myChart" width="600" height="400"></canvas>
-        </div>
-
-        <h2><router-link to="/editing">Добавить вес</router-link></h2>
+        <h2><a @click="toEdditiongPage">Добавить вес</a></h2>
+      </div>
+      <div v-else>
+        <h2><a @click="toLoginPage">Необходимо войти или зарегистрироваться</a></h2>
+      </div>
     </div>
 </template>
 
 <script>
 import { weightRef } from '../firebase'
-import ChartJSImage from 'chart.js-image';
 
 export default {
   name: 'graph',
+  props: {
+    isAuthorised: {
+      type: Boolean,
+      required: false,
+      default: false
+    }
+  },
   data () {
     return {
       weightList: [],
-      isNotAuth: true
+      chartLabelsList: [],
+      chartWeightList: [],
+      selectedDateInterval: 604800000,
+      options: [
+        { text: 'Неделя', value: 604800000 },
+        { text: '2 Недели', value: 1209600000 },
+        { text: 'Месяц', value: 2629743000 },
+        { text: 'Пол года', value: 15778463000 },
+        { text: 'Год', value: 31556926000 }
+      ]
     }
   },
   created () {
-    // const TWO_WEEK = date from component
-    // для задания интервала считать его в таймстемпе
-    // weightRef.on('value', (s) => {
-    //   if (Array.isArray(s.val())) {
-    //     this.weigthList = s.val().filter((item) => item.date - TWO_WEEK > Date.now())
-    //     return
-    //   }
-    //   this.weigthList = []
-    // })
-
-    // получение всего списка
     weightRef.on('value', (s) => {
-      this.weightList = s.val()
-    })
-
-  var lineChart = new Chart(myChart, {
-    type: 'line',
-    data: speedData,
-    options: chartOptions
-  });
-
-  var speedData = {
-  labels: ["0s", "10s", "20s", "30s", "40s", "50s", "60s"],
-  datasets: [{
-      label: "Car Speed",
-      data: [0, 59, 75, 20, 20, 55, 40],
-    }]
-  };
- 
-  var chartOptions = {
-    legend: {
-      display: true,
-      position: 'top',
-      labels: {
-        boxWidth: 80,
-        fontColor: 'black'
+      if (Array.isArray(s.val())) {
+        this.weigthList = s.val().filter((item) => item.date - this.selectedDateInterval > Date.now())
+        return
       }
+      this.weigthList = []
+    })
+    for (var item in this.weightList) {
+      this.chartLabelsList.append(new Date(item.date))
+      this.chartWeightList.append(item.weight)
     }
-  };
-
-
-
+  },
+  mounted () {
+    var ctx = document.getElementById('weightChart').getContext('2d')
+    var barChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: this.chartLabelsList,
+        datasets: [{
+          label: 'Weight',
+          data: this.chartWeightList,
+          backgroundColor: [
+            'rgba(54, 162, 235, 0.6)'
+          ]
+        }]
+      }
+    })
+  },
+  methods: {
+    toEdditiongPage () {
+      this.$router.push({ name: 'Editing', props: { isAuthorised: true } })
+    },
+    toLoginPage () {
+      this.$router.push({ name: 'Login' })
+    }
   }
 }
 </script>
